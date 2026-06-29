@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Guia de Emergência — Protocolo do Sono Perfeito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --n0:#04091a;--n1:#080f24;--n2:#0b1630;--n3:#0f1e3a;
+  --gold:#c9a84c;--gold2:#d4b45c;--gold3:#e4c97a;
+  --cream:#faf8f3;--cream2:#f2ede0;
+  --ink:#111827;--muted:#6b7280;--border:#e8e0d4;
+  --sf:'Playfair Display',Georgia,serif;
+  --ss:'Inter',system-ui,sans-serif;
+  /* scenario colors */
+  --c-reg:#6366f1;
+  --c-den:#ef4444;
+  --c-doe:#f59e0b;
+  --c-tra:#0891b2;
+  --c-gro:#059669;
+  --c-nap:#7c3aed;
+  --c-rev:#ec4899;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ss);background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.hd{
+  background:linear-gradient(135deg,var(--n0) 0%,var(--n2) 100%);
+  padding:40px 48px 36px;border-bottom:2px solid var(--gold);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;
+}
+.hd-brand{font-family:var(--sf);font-style:italic;color:var(--gold);font-size:13px;letter-spacing:.04em;margin-bottom:10px}
+.hd h1{font-family:var(--sf);font-size:40px;font-weight:900;color:#fff;line-height:1.1}
+.hd h1 em{color:var(--gold3);font-style:italic}
+.hd-sub{font-size:14px;color:rgba(255,255,255,.45);margin-top:12px;line-height:1.7;max-width:520px}
+.hd-sos{
+  background:rgba(239,68,68,.12);border:1.5px solid rgba(239,68,68,.3);
+  border-radius:14px;padding:18px 22px;text-align:center;min-width:110px;flex-shrink:0;
+}
+.hd-sos-ico{font-size:28px;margin-bottom:6px}
+.hd-sos-txt{font-size:11px;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.12em}
+
+/* NAV BAR */
+.nav{background:var(--cream2);border-bottom:1px solid var(--border);padding:14px 48px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.nav-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:6px}
+.nav-btn{
+  padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;
+  border:1.5px solid var(--border);background:#fff;cursor:pointer;
+  font-family:var(--ss);transition:all .2s;white-space:nowrap;
+}
+.nav-btn:hover{border-color:var(--gold);background:rgba(201,168,76,.06);color:var(--ink)}
+
+/* MAIN */
+.wrap{max-width:900px;margin:0 auto;padding:40px 48px 64px}
+
+/* SCENARIO */
+.sc{
+  border-radius:20px;overflow:hidden;margin-bottom:28px;
+  border:1.5px solid var(--border);
+}
+.sc-head{
+  display:grid;grid-template-columns:56px 1fr auto;
+  align-items:center;gap:0;
+  padding:20px 28px;cursor:pointer;
+  transition:background .2s;
+}
+.sc-head:hover{background:rgba(0,0,0,.02)}
+.sc-ico{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.sc-ico svg{width:22px;height:22px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sc-meta{padding:0 16px}
+.sc-kicker{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.sc-title{font-family:var(--sf);font-size:22px;font-weight:900}
+.sc-desc{font-size:13px;color:var(--muted);margin-top:3px}
+.sc-badge{
+  padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;align-self:flex-start;
+}
+.sc-body{display:none;padding:0 28px 28px;border-top:1px solid var(--border)}
+.sc.open .sc-body{display:block}
+
+/* STEPS */
+.step-list{display:flex;flex-direction:column;gap:14px;margin-top:20px}
+.step{
+  display:grid;grid-template-columns:36px 1fr;gap:0;
+  background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;
+  transition:box-shadow .2s;
+}
+.step:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.step-n{
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:900;color:#fff;
+}
+.step-content{padding:14px 18px}
+.step-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.step-body{font-size:13px;color:var(--muted);line-height:1.65}
+.step-body strong{color:var(--ink);font-weight:600}
+
+/* DOS DONTS */
+.dd-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+.dd{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.dd-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.dd-head svg{width:14px;height:14px;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.dd-list{display:flex;flex-direction:column;gap:8px}
+.dd-item{font-size:13px;color:var(--muted);line-height:1.5;display:flex;gap:8px;align-items:flex-start}
+.dd-item::before{font-size:12px;flex-shrink:0;margin-top:1px}
+.do .dd-item::before{content:"✓";color:#059669;font-weight:800}
+.dont .dd-item::before{content:"✗";color:#ef4444;font-weight:800}
+.dont .dd-head{color:#ef4444}
+.do .dd-head{color:#059669}
+
+/* DURATION PILL */
+.dur{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(0,0,0,.04);border:1px solid var(--border);
+  border-radius:20px;padding:5px 12px;
+  font-size:12px;font-weight:600;color:var(--muted);
+  margin-top:16px;
+}
+.dur svg{width:13px;height:13px;fill:none;stroke:var(--muted);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ALERT BOX */
+.abox{
+  background:linear-gradient(135deg,var(--n1),var(--n3));
+  border:1px solid rgba(201,168,76,.2);border-radius:12px;
+  padding:16px 20px;display:flex;gap:14px;margin-top:16px;
+}
+.abox svg{flex-shrink:0;width:18px;height:18px;stroke:var(--gold2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin-top:1px}
+.abox p{font-size:13px;color:rgba(255,255,255,.65);line-height:1.7}
+.abox strong{color:var(--gold3)}
+
+/* EMERGENCY BOX */
+.ebox{
+  background:linear-gradient(135deg,#1a0808,#3a0f0f);
+  border:1.5px solid rgba(239,68,68,.25);border-radius:16px;
+  padding:24px 28px;margin-bottom:28px;
+}
+.ebox-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:rgba(239,68,68,.7);margin-bottom:10px}
+.ebox h2{font-family:var(--sf);font-size:26px;color:#fff;margin-bottom:12px}
+.ebox p{font-size:13.5px;color:rgba(255,255,255,.55);line-height:1.75;margin-bottom:14px}
+.ebox-steps{display:flex;flex-direction:column;gap:8px}
+.ebox-step{
+  display:flex;gap:12px;align-items:center;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:12px 16px;
+}
+.ebox-step-n{
+  width:28px;height:28px;border-radius:50%;
+  background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;color:rgba(239,68,68,.9);flex-shrink:0;
+}
+.ebox-step p{font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;margin:0}
+
+/* SECTION HEADING */
+.sec-h{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:22px 0 10px}
+
+/* MEDICO */
+.medico{
+  background:#fff;border:1.5px solid rgba(239,68,68,.2);
+  border-radius:12px;padding:16px 20px;margin-top:16px;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.medico svg{flex-shrink:0;width:18px;height:18px;stroke:#ef4444;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+.medico p{font-size:13px;color:var(--ink);line-height:1.65}
+.medico strong{color:#ef4444}
+
+/* FOOTER */
+.ft{background:var(--n0);padding:24px 48px;text-align:center;border-top:1px solid rgba(201,168,76,.15)}
+.ft p{font-size:11.5px;color:rgba(255,255,255,.25)}
+.ft strong{color:var(--gold);font-style:italic;font-family:var(--sf)}
+
+/* PRINT */
+@media print{
+  .nav,.ft{display:none}
+  .sc .sc-body{display:block!important}
+  .sc,.ebox,.step{break-inside:avoid}
+  .hd,.sc-head{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff}
+  .wrap{padding:20px}
+}
+@media(max-width:640px){
+  .hd,.nav,.wrap,.ft{padding-left:20px;padding-right:20px}
+  .hd h1{font-size:28px}
+  .dd-grid{grid-template-columns:1fr}
+  .sc-head{grid-template-columns:44px 1fr}
+  .sc-badge{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hd">
+  <div>
+    <div class="hd-brand">Protocolo do Sono Perfeito</div>
+    <h1>Guia de <em>Emergência</em></h1>
+    <p class="hd-sub">Para a madrugada em que tudo desandou. Cada situação tem um protocolo específico. Encontre o seu, respire fundo e siga o passo a passo.</p>
+  </div>
+  <div class="hd-sos">
+    <div class="hd-sos-ico">🆘</div>
+    <div class="hd-sos-txt">Guia SOS</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <span class="nav-label">Ir direto:</span>
+  <button class="nav-btn" onclick="open_jump('reg')">Regressão de Sono</button>
+  <button class="nav-btn" onclick="open_jump('den')">Dentição</button>
+  <button class="nav-btn" onclick="open_jump('doe')">Doença</button>
+  <button class="nav-btn" onclick="open_jump('tra')">Viagem</button>
+  <button class="nav-btn" onclick="open_jump('gro')">Pico de Crescimento</button>
+  <button class="nav-btn" onclick="open_jump('nap')">Transição de Fase</button>
+  <button class="nav-btn" onclick="open_jump('rev')">Despertar Precoce</button>
+</div>
+
+<!-- WRAP -->
+<div class="wrap">
+
+<!-- PROTOCOLO MADRUGADA -->
+<div class="ebox">
+  <div class="ebox-label">Protocolo Madrugada</div>
+  <h2>Bebê acordou agora. O que fazer?</h2>
+  <p>Antes de correr para o quarto, espere. Respire. Siga esta sequência em ordem.</p>
+  <div class="ebox-steps">
+    <div class="ebox-step">
+      <div class="ebox-step-n">1</div>
+      <p><strong>Espere 2–3 minutos antes de intervir.</strong> Bebês fazem sons e se movem entre ciclos de sono sem acordar de verdade. Intervenção imediata ensina que alguém sempre virá.</p>
+    </div>
+    <div class="ebox-step">
+      <div class="ebox-step-n">2</div>
+      <p><strong>Ouça o tipo de choro:</strong> choro escalonado (sobe e desce) = provavelmente voltará a dormir. Choro constante e forte = precisa de você.</p>
+    </div>
+    <div class="ebox-step">
+      <div class="ebox-step-n">3</div>
+      <p><strong>Ao entrar: vá com calma.</strong> Não acenda a luz, não fale alto. Verifique fralda, temperatura e dor. Resolvida a causa, coloque de volta sonolento.</p>
+    </div>
+    <div class="ebox-step">
+      <div class="ebox-step-n">4</div>
+      <p><strong>Se demorar mais de 40 minutos:</strong> identifique o cenário abaixo e aplique o protocolo específico — não é só "choro para dormir".</p>
+    </div>
+  </div>
+</div>
+
+<!-- =================== REGRESSÃO =================== -->
+<div class="sc" id="reg">
+  <div class="sc-head" style="background:rgba(99,102,241,.04)" onclick="tog(this)">
+    <div class="sc-ico" style="background:rgba(99,102,241,.1)">
+      <svg style="stroke:var(--c-reg)" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/><path d="M12 7v5l3 3"/></svg>
+    </div>
+    <div class="sc-meta">
+      <div class="sc-kicker" style="color:var(--c-reg)">Situação 01</div>
+      <div class="sc-title">Regressão de Sono</div>
+      <div class="sc-desc">Bebê que dormia bem e subitamente parou</div>
+    </div>
+    <div class="sc-badge" style="background:rgba(99,102,241,.1);color:var(--c-reg)">2–6 semanas</div>
+  </div>
+  <div class="sc-body">
+    <p style="font-size:13.5px;color:var(--muted);line-height:1.75;margin-top:16px">As regressões acontecem em momentos previsíveis de desenvolvimento. Não é retrocesso — é progresso. O cérebro está se reorganizando.</p>
+    <div class="dur"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Duração média: 2–6 semanas · Marcos: 4m, 8m, 12m, 18m, 2 anos</div>
+
+    <div class="sec-h">Sinais de que é regressão (não outro problema)</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-n" style="background:var(--c-reg)">→</div>
+        <div class="step-content">
+          <div class="step-title">Subitamente — sem causa aparente</div>
+          <div class="step-body">Bebê que dormia bem há semanas de repente acorda múltiplas vezes. Não há febre, não há dentição visível, não houve mudança de ambiente.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-reg)">→</div>
+        <div class="step-content">
+          <div class="step-title">Aumento de fome e irritabilidade</div>
+          <div class="step-body">Quer mamar com mais frequência, fica grudado durante o dia, tem mais dificuldade de se acalmar.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-reg)">→</div>
+        <div class="step-content">
+          <div class="step-title">Marcos motores ou cognitivos simultâneos</div>
+          <div class="step-body">Está tentando rolar, sentar, engatinhar, falar, ou há um salto de consciência social. Esses saltos consomem energia e perturbam o sono.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-h">O que fazer</div>
+    <div class="dd-grid">
+      <div class="dd do">
+        <div class="dd-head"><svg viewBox="0 0 24 24" style="stroke:#059669"><polyline points="20 6 9 17 4 12"/></svg>Faça</div>
+        <div class="dd-list">
+          <div class="dd-item">Mantenha a rotina noturna exatamente igual</div>
+          <div class="dd-item">Ofereça conforto extra durante o dia — não à noite</div>
+          <div class="dd-item">Amamente em livre demanda se o bebê for pequeno</div>
+          <div class="dd-item">Antecipe o horário de dormir em 15–30 min durante a regressão</div>
+          <div class="dd-item">Comunique-se com o bebê: "Eu sei que está difícil. Você vai aprender."</div>
+        </div>
+      </div>
+      <div class="dd dont">
+        <div class="dd-head"><svg viewBox="0 0 24 24" style="stroke:#ef4444"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Não faça</div>
+        <div class="dd-list">
+          <div class="dd-item">Criar novos propós de sono que não quer manter (colo para adormecer)</div>
+          <div class="dd-item">Levar o bebê para a sua cama "só essa semana"</div>
+          <div class="dd-item">Abandonar métodos que funcionavam — continue</div>
+          <div class="dd-item">Tentar ensinar habilidades novas durante a regressão — espere passar</div>
+        </div>
+      </div>
+    </div>
+    <div class="abox">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p>Se passar de <strong>6 semanas sem melhora</strong>, provavelmente não é só regressão. Verifique pressão na orelha (otite), acidez (refluxo), ou consulte o pediatra antes de trabalhar o sono.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =================== DENTIÇÃO =================== -->
+<div class="sc" id="den">
+  <div class="sc-head" style="background:rgba(239,68,68,.04)" onclick="tog(this)">
+    <div class="sc-ico" style="background:rgba(239,68,68,.1)">
+      <svg style="stroke:var(--c-den)" viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+    </div>
+    <div class="sc-meta">
+      <div class="sc-kicker" style="color:var(--c-den)">Situação 02</div>
+      <div class="sc-title">Dentição</div>
+      <div class="sc-desc">Salivação excessiva, irritabilidade e gengiva inchada</div>
+    </div>
+    <div class="sc-badge" style="background:rgba(239,68,68,.1);color:var(--c-den)">2–7 dias/dente</div>
+  </div>
+  <div class="sc-body">
+    <p style="font-size:13.5px;color:var(--muted);line-height:1.75;margin-top:16px">A dentição perturba o sono — mas muito menos do que se imagina. Pesquisas mostram que ela causa desconforto real apenas nos <strong>2–3 dias antes e 1 dia depois</strong> do dente romper. Semanas de "sono ruim por dentição" quase sempre têm outra causa.</p>
+    <div class="dur"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Dentes incisivos: 6–12 meses · Molares (mais dolorosos): 12–24 meses</div>
+
+    <div class="sec-h">Como saber se é dentição de verdade</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-n" style="background:var(--c-den)">1</div>
+        <div class="step-content">
+          <div class="step-title">Gengiva visivelmente inchada ou branca naquele ponto</div>
+          <div class="step-body">Coloque o dedo limpo na gengiva — você vai sentir o dente se ele estiver prestes a romper. Sem protuberância = provavelmente não é dentição.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-den)">2</div>
+        <div class="step-content">
+          <div class="step-title">Sialorreia intensa + mordidas em tudo</div>
+          <div class="step-body">Salivação excessiva começa antes do dente e persiste por dias. O reflexo de morder é instintivo — oferece alívio pela pressão contra-irritante.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-h">Alívio imediato</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-n" style="background:var(--c-den)">A</div>
+        <div class="step-content">
+          <div class="step-title">Mordedor de silicone resfriado (não congelado)</div>
+          <div class="step-body">Frio reduz inflamação, pressão alivia dor. Nunca congele — pode causar queimadura pelo frio na gengiva delicada.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-den)">B</div>
+        <div class="step-content">
+          <div class="step-title">Massagem suave na gengiva com dedo limpo</div>
+          <div class="step-body">Pressão direta é mais eficaz do que qualquer gel. Higienize a mão completamente antes. Faça movimentos circulares suaves.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-den)">C</div>
+        <div class="step-content">
+          <div class="step-title">Analgésico recomendado pelo pediatra (se necessário)</div>
+          <div class="step-body">Paracetamol ou ibuprofeno na dose correta para o peso. Geis tópicos com benzocaína <strong>não são recomendados</strong> para bebês — consulte o pediatra.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="medico">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <p><strong>Consulte o pediatra se:</strong> febre acima de 38°C (dentição não causa febre alta), diarreia intensa, recusa total de alimentação ou sinais de dor que não passam com analgésico.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =================== DOENÇA =================== -->
+<div class="sc" id="doe">
+  <div class="sc-head" style="background:rgba(245,158,11,.04)" onclick="tog(this)">
+    <div class="sc-ico" style="background:rgba(245,158,11,.1)">
+      <svg style="stroke:var(--c-doe)" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    </div>
+    <div class="sc-meta">
+      <div class="sc-kicker" style="color:var(--c-doe)">Situação 03</div>
+      <div class="sc-title">Doença</div>
+      <div class="sc-desc">Resfriado, febre, otite, vírus — qualquer adoecimento</div>
+    </div>
+    <div class="sc-badge" style="background:rgba(245,158,11,.1);color:var(--c-doe)">Transitório</div>
+  </div>
+  <div class="sc-body">
+    <p style="font-size:13.5px;color:var(--muted);line-height:1.75;margin-top:16px">Durante uma doença, <strong>o conforto vem primeiro</strong>. Não é o momento de trabalhar habilidades de sono. Mas existem formas de confortar sem criar hábitos difíceis de desfazer.</p>
+
+    <div class="sec-h">Prioridades durante a doença</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-n" style="background:var(--c-doe)">1</div>
+        <div class="step-content">
+          <div class="step-title">Controle a febre e o desconforto</div>
+          <div class="step-body">Febre perturba mais o sono do que qualquer outra coisa. Analgésico/antitérmico adequado é a primeira intervenção. Consulte o pediatra para dose.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-doe)">2</div>
+        <div class="step-content">
+          <div class="step-title">Mantenha o quarto fresco e úmido</div>
+          <div class="step-body">Umidificador de ar alivia coriza e tosse. Temperatura entre 19–21°C. Evite superaquecimento — comum quando os pais "agasalham" o bebê febril.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-doe)">3</div>
+        <div class="step-content">
+          <div class="step-title">Mantenha a rotina — adapte o horário se necessário</div>
+          <div class="step-body">Mesmo a ritmo mais lento, faça banho, pijama, música. O ritual é um âncora de segurança — especialmente quando o bebê não está bem.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-doe)">4</div>
+        <div class="step-content">
+          <div class="step-title">Ofereça conforto sem criar novos propôs</div>
+          <div class="step-body">Pode colocar a mão no peito, fazer shh, ficar ao lado. <strong>Evite retornar ao seio ou ao colo para adormecer</strong> se o bebê já tinha independência de sono — será difícil desfazer.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-doe)">5</div>
+        <div class="step-content">
+          <div class="step-title">Retome a rotina normal 24h após a melhora</div>
+          <div class="step-body">Não prolongue os "mimos" além da doença. Cada dia extra que a rotina fica suspensa prolonga a recuperação do sono. Volte imediatamente — com gentileza, mas com firmeza.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== VIAGEM =================== -->
+<div class="sc" id="tra">
+  <div class="sc-head" style="background:rgba(8,145,178,.04)" onclick="tog(this)">
+    <div class="sc-ico" style="background:rgba(8,145,178,.1)">
+      <svg style="stroke:var(--c-tra)" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.37a16 16 0 006.72 6.72l1.73-1.73a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    </div>
+    <div class="sc-meta">
+      <div class="sc-kicker" style="color:var(--c-tra)">Situação 04</div>
+      <div class="sc-title">Viagem e Mudança de Fuso</div>
+      <div class="sc-desc">Deslocamentos, quartos diferentes, fusos horários</div>
+    </div>
+    <div class="sc-badge" style="background:rgba(8,145,178,.1);color:var(--c-tra)">3–7 dias para adaptar</div>
+  </div>
+  <div class="sc-body">
+    <p style="font-size:13.5px;color:var(--muted);line-height:1.75;margin-top:16px">Bebês são mais adaptáveis do que parece — o que os desregula não é o lugar novo, é a quebra de rotina e de pistas sensoriais familiares. Recrie o ambiente, não o lugar.</p>
+
+    <div class="sec-h">Antes de viajar</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-n" style="background:var(--c-tra)">1</div>
+        <div class="step-content">
+          <div class="step-title">Leve o ambiente, não a cama</div>
+          <div class="step-body">Ruído branco no celular, blackout portátil (lona de blackout com ventosas), pijama usual, saquinho de dormir. O olfato do bebê também conta — pijama com cheiro de casa.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-tra)">2</div>
+        <div class="step-content">
+          <div class="step-title">Para fusos de +2h ou mais: ajuste gradual</div>
+          <div class="step-body">Nos 3 dias antes da viagem, adiante ou atrase o horário de dormir em 20–30 minutos por dia na direção do fuso destino.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-h">Durante a viagem</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-n" style="background:var(--c-tra)">A</div>
+        <div class="step-content">
+          <div class="step-title">Adapte pelo horário local desde o dia 1</div>
+          <div class="step-body">Exponha ao sol pela manhã e evite luz forte à noite. A luz natural é o sincronizador mais potente do ritmo circadiano do bebê.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-tra)">B</div>
+        <div class="step-content">
+          <div class="step-title">Faça a rotina noturna completa, sempre</div>
+          <div class="step-body">Mesmo em quarto de hotel, apartamento do avô, ou casa alugada. A sequência é o ritual — não o lugar. Segue: banho → pijama → música → deitar.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-h">Ao voltar</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-n" style="background:var(--c-tra)">→</div>
+        <div class="step-content">
+          <div class="step-title">Retome a rotina na primeira noite em casa</div>
+          <div class="step-body">Sem transição gradual de "readaptação". A rotina familiar junto ao ambiente familiar funciona como âncora imediata. Tenha paciência com 3–5 noites de ajuste.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== PICO DE CRESCIMENTO =================== -->
+<div class="sc" id="gro">
+  <div class="sc-head" style="background:rgba(5,150,105,.04)" onclick="tog(this)">
+    <div class="sc-ico" style="background:rgba(5,150,105,.1)">
+      <svg style="stroke:var(--c-gro)" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+    </div>
+    <div class="sc-meta">
+      <div class="sc-kicker" style="color:var(--c-gro)">Situação 05</div>
+      <div class="sc-title">Pico de Crescimento</div>
+      <div class="sc-desc">Fome intensa, irritabilidade e sono fragmentado por 2–7 dias</div>
+    </div>
+    <div class="sc-badge" style="background:rgba(5,150,105,.1);color:var(--c-gro)">2–7 dias</div>
+  </div>
+  <div class="sc-body">
+    <p style="font-size:13.5px;color:var(--muted);line-height:1.75;margin-top:16px">Picos acontecem em semanas previsíveis: 3ª, 6ª, 3º mês, 6º mês, 9º mês, 12º mês. O bebê está crescendo literalmente durante o sono — o metabolismo acelerado gera demanda extra de alimentação e perturba ciclos.</p>
+    <div class="dur"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Duração: 2–7 dias · Semanas típicas: 3, 6, 9, 12 semanas e 3, 6, 9, 12 meses</div>
+
+    <div class="sec-h">O que fazer</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-n" style="background:var(--c-gro)">1</div>
+        <div class="step-content">
+          <div class="step-title">Alimente em livre demanda durante o pico</div>
+          <div class="step-body">Não tente "segurar" o bebê amamentado por mais tempo entre mamadas. O volume extra de leite que ele pede está estimulando sua produção para a próxima fase.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-gro)">2</div>
+        <div class="step-content">
+          <div class="step-title">Mantenha a rotina noturna — mesmo que o bebê acorde mais</div>
+          <div class="step-body">A rotina serve de âncora durante o caos do crescimento. Alterar a rotina para "compensar" prolonga o período difícil.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-gro)">3</div>
+        <div class="step-content">
+          <div class="step-title">Ofereça nap extra se necessário</div>
+          <div class="step-body">Durante picos, o bebê pode precisar de uma soneca extra por 2–3 dias. Não é problema — volte ao cronograma normal assim que o pico passar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== TRANSIÇÃO NAPS =================== -->
+<div class="sc" id="nap">
+  <div class="sc-head" style="background:rgba(124,58,237,.04)" onclick="tog(this)">
+    <div class="sc-ico" style="background:rgba(124,58,237,.1)">
+      <svg style="stroke:var(--c-nap)" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/><polyline points="7 10 12 15 17 10"/></svg>
+    </div>
+    <div class="sc-meta">
+      <div class="sc-kicker" style="color:var(--c-nap)">Situação 06</div>
+      <div class="sc-title">Transição de Naps</div>
+      <div class="sc-desc">Passando de 3→2, 2→1 ou acabando o nap</div>
+    </div>
+    <div class="sc-badge" style="background:rgba(124,58,237,.1);color:var(--c-nap)">2–4 semanas</div>
+  </div>
+  <div class="sc-body">
+    <p style="font-size:13.5px;color:var(--muted);line-height:1.75;margin-top:16px">A transição de naps é um dos momentos mais desestabilizadores do primeiro ano. O bebê fica em "terra de ninguém": o nap antigo perturba a noite, mas sem ele fica muito cansado. Aqui está como atravessar.</p>
+
+    <div class="sec-h">3 → 2 naps (5–8 meses)</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-n" style="background:var(--c-nap)">A</div>
+        <div class="step-content">
+          <div class="step-title">Sinais de prontidão</div>
+          <div class="step-body">Leva mais de 30 min para dormir no 3º nap, naps da manhã e tarde ficam mais longos, noite melhora sem o 3º nap por mais de 1 semana.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-nap)">B</div>
+        <div class="step-content">
+          <div class="step-title">Como fazer</div>
+          <div class="step-body">Elimine o 3º nap e antecipe a hora de dormir em 30–45 min por 1–2 semanas até o bebê se adaptar à janela maior de vigília.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-h" style="margin-top:18px">2 → 1 nap (12–18 meses)</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-n" style="background:var(--c-nap)">A</div>
+        <div class="step-content">
+          <div class="step-title">Sinais de prontidão</div>
+          <div class="step-body">Resiste ao nap da manhã consistentemente, nap da tarde perturba a noite, fica bem (sem birra extrema) até o horário do almoço. A maioria está pronta entre 15–18 meses.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-nap)">B</div>
+        <div class="step-content">
+          <div class="step-title">Estratégia de transição</div>
+          <div class="step-body">Semanas 1–2: alterne 2 e 1 nap por dia. Semana 3: passe para 1 nap fixo às 12h30–13h. Antecipe hora de dormir para 18h30 enquanto se adapta.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="abox">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p><strong>Birra vespertina intensa</strong> durante as primeiras 2 semanas de 1 nap é normal — o bebê está genuinamente cansado enquanto se adapta. <strong>Antecipe a hora de dormir</strong> (até 18h se necessário) para compensar. Não volte para 2 naps por causa do comportamento vespertino.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =================== DESPERTAR PRECOCE =================== -->
+<div class="sc" id="rev">
+  <div class="sc-head" style="background:rgba(236,72,153,.04)" onclick="tog(this)">
+    <div class="sc-ico" style="background:rgba(236,72,153,.1)">
+      <svg style="stroke:var(--c-rev)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/></svg>
+    </div>
+    <div class="sc-meta">
+      <div class="sc-kicker" style="color:var(--c-rev)">Situação 07</div>
+      <div class="sc-title">Despertar Precoce</div>
+      <div class="sc-desc">Bebê acorda às 4h, 5h ou 5h30 — e não volta a dormir</div>
+    </div>
+    <div class="sc-badge" style="background:rgba(236,72,153,.1);color:var(--c-rev)">Padrão crônico</div>
+  </div>
+  <div class="sc-body">
+    <p style="font-size:13.5px;color:var(--muted);line-height:1.75;margin-top:16px">Despertar antes das 6h por mais de 3 dias consecutivos é um padrão — não um evento isolado. Tem causa tratável. A maioria das famílias descobre que a solução é contraintuitiva.</p>
+
+    <div class="sec-h">As 4 causas mais comuns (em ordem de frequência)</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-n" style="background:var(--c-rev)">1</div>
+        <div class="step-content">
+          <div class="step-title">Hora de dormir muito tarde</div>
+          <div class="step-body">Parece ilógico, mas bebê que dorme muito tarde acorda mais cedo. Quando está hiperativo antes de dormir, o cortisol alto continua na madrugada e empurra o despertar. <strong>Tente 30 min mais cedo.</strong></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-rev)">2</div>
+        <div class="step-content">
+          <div class="step-title">Luz entrando no quarto cedo demais</div>
+          <div class="step-body">O sol das 5h é suficiente para suprimir melatonina e terminar o sono. Blackout eficiente (sem frestas laterais) resolve em 1–3 noites.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-rev)">3</div>
+        <div class="step-content">
+          <div class="step-title">Nap da tarde muito longo ou muito tarde</div>
+          <div class="step-body">Nap que termina depois das 16h30 reduz a pressão de sono noturno. O bebê dorme mais rápido mas acorda mais cedo. Limite: terminar até 16h/16h30.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n" style="background:var(--c-rev)">4</div>
+        <div class="step-content">
+          <div class="step-title">Associação de sono com presença dos pais</div>
+          <div class="step-body">O bebê acorda no fim de um ciclo (normal às 5h–5h30) e não consegue se recolocar no sono porque precisa da mesma condição que tinha ao adormecer.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="abox">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p><strong>Teste um fator por vez.</strong> Comece pelo blackout (mais fácil), depois o horário de dormir, depois o nap. Cada mudança precisa de <strong>5–7 dias</strong> para mostrar efeito. Não troque de estratégia antes disso.</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="ft">
+  <p><strong>Protocolo do Sono Perfeito</strong> · Bônus 03 — Guia de Emergência · Uso exclusivo do comprador</p>
+</div>
+
+<script>
+function tog(head){
+  const card=head.closest('.sc');
+  card.classList.toggle('open');
+}
+function open_jump(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.add('open');
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Tabela de Horários por Idade — Protocolo do Sono Perfeito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --n0:#04091a;--n1:#080f24;--n2:#0b1630;--n3:#0f1e3a;
+  --gold:#c9a84c;--gold2:#d4b45c;--gold3:#e4c97a;
+  --cream:#faf8f3;--cream2:#f2ede0;
+  --ink:#111827;--muted:#6b7280;--border:#e8e0d4;
+  --sf:'Playfair Display',Georgia,serif;
+  --ss:'Inter',system-ui,sans-serif;
+
+  /* age phase colors */
+  --p0:#6366f1;--p0l:rgba(99,102,241,.08);
+  --p1:#0891b2;--p1l:rgba(8,145,178,.08);
+  --p2:#059669;--p2l:rgba(5,150,105,.08);
+  --p3:#d97706;--p3l:rgba(217,119,6,.08);
+  --p4:#dc2626;--p4l:rgba(220,38,38,.08);
+  --p5:#7c3aed;--p5l:rgba(124,58,237,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ss);background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.hd{
+  background:linear-gradient(135deg,var(--n0) 0%,var(--n2) 100%);
+  padding:40px 48px 36px;border-bottom:2px solid var(--gold);
+}
+.hd-brand{font-family:var(--sf);font-style:italic;color:var(--gold);font-size:13px;letter-spacing:.04em;margin-bottom:10px}
+.hd h1{font-family:var(--sf);font-size:40px;font-weight:900;color:#fff;line-height:1.1}
+.hd h1 em{color:var(--gold3);font-style:italic}
+.hd-sub{font-size:14px;color:rgba(255,255,255,.45);margin-top:12px;line-height:1.7;max-width:560px}
+
+/* LEGEND */
+.legend{background:var(--cream2);border-bottom:1px solid var(--border);padding:18px 48px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.legend-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-right:6px}
+.leg-dot{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink);font-weight:500}
+.leg-dot span{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+/* WRAP */
+.wrap{max-width:1000px;margin:0 auto;padding:40px 48px 64px}
+
+/* AGE CARD */
+.age-card{
+  border:1.5px solid var(--border);border-radius:16px;overflow:hidden;
+  margin-bottom:24px;transition:box-shadow .2s;
+}
+.age-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.07)}
+
+/* CARD HEAD */
+.card-head{
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;
+  padding:18px 24px;cursor:pointer;
+}
+.phase-badge{
+  padding:6px 14px;border-radius:20px;font-size:11px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;
+}
+.card-age{font-family:var(--sf);font-size:20px;font-weight:900}
+.card-sleep{font-size:13px;color:var(--muted);margin-top:2px}
+.card-toggle{
+  width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.06);
+  display:flex;align-items:center;justify-content:center;transition:transform .3s;
+}
+.card-toggle svg{width:14px;height:14px;stroke:var(--muted);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.age-card.open .card-toggle{transform:rotate(180deg)}
+
+/* CARD BODY */
+.card-body{display:none;padding:0 24px 24px}
+.age-card.open .card-body{display:block}
+
+/* TIMELINE */
+.timeline{
+  background:#fff;border:1px solid var(--border);border-radius:12px;
+  padding:20px 24px;margin-bottom:18px;
+}
+.tl-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:12px}
+.tl-bar{
+  display:flex;height:28px;border-radius:6px;overflow:hidden;
+  background:#f3f4f6;margin-bottom:8px;position:relative;
+}
+.tl-seg{
+  height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:#fff;position:relative;overflow:hidden;
+  min-width:2%;
+}
+.tl-seg.night{background:var(--n2)}
+.tl-seg.nap{background:rgba(201,168,76,.7)}
+.tl-seg.wake{background:#e8e0d4}
+.tl-hours{display:flex;gap:0;margin-top:6px}
+.tl-hours span{flex:1;font-size:9px;color:var(--muted);text-align:center}
+.tl-legend{display:flex;gap:16px;margin-top:10px}
+.tl-leg{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted)}
+.tl-leg span{width:12px;height:12px;border-radius:3px;display:inline-block}
+
+/* STATS GRID */
+.stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:10px;margin-bottom:18px;
+}
+.stat{
+  background:#fff;border:1px solid var(--border);border-radius:10px;
+  padding:14px 16px;
+}
+.stat-val{font-size:22px;font-weight:900;line-height:1;margin-bottom:4px}
+.stat-key{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+
+/* NOTES */
+.notes{display:flex;flex-direction:column;gap:8px}
+.note{
+  display:flex;gap:12px;align-items:flex-start;
+  background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 16px;
+}
+.note-ico{flex-shrink:0;margin-top:1px}
+.note-ico svg{width:15px;height:15px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.note p{font-size:13px;color:var(--ink);line-height:1.6}
+.note p strong{font-weight:700}
+
+/* WAKE WINDOWS TABLE */
+.ww-table{width:100%;border-collapse:collapse;margin-top:8px;margin-bottom:18px}
+.ww-table th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:8px 14px;background:#f9f7f4;border:1px solid var(--border);text-align:left}
+.ww-table td{font-size:13px;color:var(--ink);padding:10px 14px;border:1px solid var(--border);background:#fff}
+.ww-table tr:hover td{background:#faf8f4}
+
+/* SECTION HEADING */
+.sec-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:18px 0 8px}
+
+/* ALERT */
+.alert{
+  background:linear-gradient(135deg,var(--n1),var(--n3));
+  border:1px solid rgba(201,168,76,.2);border-radius:12px;
+  padding:18px 20px;display:flex;gap:14px;margin-top:32px;
+}
+.alert svg{width:18px;height:18px;stroke:var(--gold2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;margin-top:2px}
+.alert p{font-size:13px;color:rgba(255,255,255,.65);line-height:1.7}
+.alert strong{color:var(--gold3)}
+
+/* FILTER BAR */
+.filter{background:var(--cream2);border-bottom:1px solid var(--border);padding:14px 48px;display:flex;gap:8px;flex-wrap:wrap}
+.filter-btn{
+  padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);
+  background:#fff;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;
+  transition:all .2s;font-family:var(--ss);
+}
+.filter-btn:hover,.filter-btn.active{color:var(--ink);border-color:var(--gold);background:rgba(201,168,76,.06)}
+
+/* FOOTER */
+.ft{background:var(--n0);padding:24px 48px;text-align:center;border-top:1px solid rgba(201,168,76,.15)}
+.ft p{font-size:11.5px;color:rgba(255,255,255,.25)}
+.ft strong{color:var(--gold);font-style:italic;font-family:var(--sf)}
+
+/* PRINT */
+@media print{
+  .filter,.ft{display:none}
+  .age-card{break-inside:avoid}
+  .age-card .card-body{display:block!important}
+  .hd,.card-head{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff}
+  .wrap{padding:20px}
+}
+@media(max-width:640px){
+  .hd,.legend,.filter,.wrap,.ft{padding-left:20px;padding-right:20px}
+  .hd h1{font-size:28px}
+  .stats{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hd">
+  <div class="hd-brand">Protocolo do Sono Perfeito</div>
+  <h1>Tabela de Horários <em>por Idade</em></h1>
+  <p class="hd-sub">Referência completa do sono do 0 ao 3 anos: total de horas, janelas de vigília, horário ideal de dormir e sinais de transição de fase. Clique em cada fase para expandir os detalhes.</p>
+</div>
+
+<!-- FILTER -->
+<div class="filter">
+  <span style="font-size:12px;font-weight:600;color:var(--muted);margin-right:4px;align-self:center">Ir para:</span>
+  <button class="filter-btn" onclick="jump('p0')">0–3 meses</button>
+  <button class="filter-btn" onclick="jump('p1')">3–6 meses</button>
+  <button class="filter-btn" onclick="jump('p2')">6–9 meses</button>
+  <button class="filter-btn" onclick="jump('p3')">9–12 meses</button>
+  <button class="filter-btn" onclick="jump('p4')">12–18 meses</button>
+  <button class="filter-btn" onclick="jump('p5')">18m–3 anos</button>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <span class="legend-label">Legenda</span>
+  <span class="leg-dot"><span style="background:var(--n2)"></span>Sono noturno</span>
+  <span class="leg-dot"><span style="background:rgba(201,168,76,.7)"></span>Nap (soneca)</span>
+  <span class="leg-dot"><span style="background:#e8e0d4;border:1px solid #d0c8be"></span>Vigília</span>
+</div>
+
+<!-- WRAP -->
+<div class="wrap">
+
+<!-- =================== FASE 0 =================== -->
+<div class="age-card open" id="p0">
+  <div class="card-head" style="background:var(--p0l);border-bottom:1px solid rgba(99,102,241,.1)" onclick="tog(this)">
+    <div class="phase-badge" style="background:var(--p0l);color:var(--p0)">Fase 1</div>
+    <div>
+      <div class="card-age" style="color:var(--p0)">Recém-nascido · 0 a 3 meses</div>
+      <div class="card-sleep">14–17h de sono total por dia</div>
+    </div>
+    <div class="card-toggle"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+  </div>
+  <div class="card-body">
+    <div class="tl-label" style="margin-top:4px">Distribuição típica de 24h (referência)</div>
+    <div class="tl-bar">
+      <!-- 7h night: 19h–22h vigília, 22h–5h sono, 5h–6h nap, 6h–8h vigília, 8h–9h nap, 9h–11h vigília, 11h–12h nap, 12h–14h vigília, 14h–15h nap, 15h–17h vigília, 17h–18h nap, 18h–19h vigília -->
+      <div class="tl-seg night" style="flex:8;min-width:8%" title="Sono noturno 22h–06h"></div>
+      <div class="tl-seg nap" style="flex:1.5" title="Nap"></div>
+      <div class="tl-seg wake" style="flex:1.5" title="Vigília"></div>
+      <div class="tl-seg nap" style="flex:1.5" title="Nap"></div>
+      <div class="tl-seg wake" style="flex:2" title="Vigília"></div>
+      <div class="tl-seg nap" style="flex:1.5" title="Nap"></div>
+      <div class="tl-seg wake" style="flex:1.5" title="Vigília"></div>
+      <div class="tl-seg nap" style="flex:1.5" title="Nap"></div>
+      <div class="tl-seg wake" style="flex:2" title="Vigília"></div>
+      <div class="tl-seg nap" style="flex:1" title="Nap"></div>
+      <div class="tl-seg wake" style="flex:1" title="Vigília"></div>
+    </div>
+    <div class="tl-legend">
+      <div class="tl-leg"><span style="background:var(--n2)"></span>~8–10h noite (com despertares)</div>
+      <div class="tl-leg"><span style="background:rgba(201,168,76,.7)"></span>4–6 naps/dia</div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-val" style="color:var(--p0)">14–17h</div>
+        <div class="stat-key">Sono total/dia</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" style="color:var(--p0)">4–6</div>
+        <div class="stat-key">Naps por dia</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" style="color:var(--p0)">45–90min</div>
+        <div class="stat-key">Janela de vigília</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" style="color:var(--p0)">19h–21h</div>
+        <div class="stat-key">Hora de dormir</div>
+      </div>
+    </div>
+
+    <div class="sec-head">Tabela de vigília por semana de vida</div>
+    <table class="ww-table">
+      <thead><tr><th>Semanas</th><th>Janela de vigília</th><th>Duração do nap</th><th>Despertares noturnos</th></tr></thead>
+      <tbody>
+        <tr><td>0–4 semanas</td><td>45–60 minutos</td><td>30–120 min (variável)</td><td>A cada 2–3h (normal)</td></tr>
+        <tr><td>4–8 semanas</td><td>60–75 minutos</td><td>45–90 min</td><td>A cada 2–3h</td></tr>
+        <tr><td>8–12 semanas</td><td>75–90 minutos</td><td>45–120 min</td><td>A cada 3–4h (pode alongar)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sec-head">Pontos de atenção</div>
+    <div class="notes">
+      <div class="note">
+        <div class="note-ico"><svg viewBox="0 0 24 24" style="stroke:var(--p0)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <p><strong>Despertares noturnos são fisiológicos.</strong> O estômago pequeno exige alimentação frequente. Não é problema de sono — é desenvolvimento. Alimentação em livre demanda é recomendada até os 3 meses.</p>
+      </div>
+      <div class="note">
+        <div class="note-ico"><svg viewBox="0 0 24 24" style="stroke:var(--p0)"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
+        <p><strong>Regressão dos 4 meses acontece entre 3.5–4.5 meses.</strong> O sono muda estruturalmente para ciclos de adulto. Prepare-se com rotina sólida antes dessa virada.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== FASE 1 =================== -->
+<div class="age-card" id="p1">
+  <div class="card-head" style="background:var(--p1l);border-bottom:1px solid rgba(8,145,178,.1)" onclick="tog(this)">
+    <div class="phase-badge" style="background:var(--p1l);color:var(--p1)">Fase 2</div>
+    <div>
+      <div class="card-age" style="color:var(--p1)">3 a 6 meses</div>
+      <div class="card-sleep">12–16h de sono total por dia</div>
+    </div>
+    <div class="card-toggle"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+  </div>
+  <div class="card-body">
+    <div class="stats">
+      <div class="stat"><div class="stat-val" style="color:var(--p1)">12–16h</div><div class="stat-key">Sono total/dia</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p1)">3–4</div><div class="stat-key">Naps por dia</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p1)">1,5–2,5h</div><div class="stat-key">Janela de vigília</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p1)">18h30–20h</div><div class="stat-key">Hora de dormir</div></div>
+    </div>
+    <div class="sec-head">Rotina sugerida (bebê de 4–5 meses)</div>
+    <table class="ww-table">
+      <thead><tr><th>Hora</th><th>Evento</th><th>Duração</th></tr></thead>
+      <tbody>
+        <tr><td>07h00</td><td>Acordar + amamentação</td><td>—</td></tr>
+        <tr><td>08h30–09h</td><td>Nap 1</td><td>45–90 min</td></tr>
+        <tr><td>11h–11h30</td><td>Nap 2</td><td>45–90 min</td></tr>
+        <tr><td>14h–14h30</td><td>Nap 3</td><td>45–60 min</td></tr>
+        <tr><td>16h30</td><td>Nap 4 (cap nap)</td><td>20–30 min</td></tr>
+        <tr><td>19h–19h30</td><td>Início da rotina noturna</td><td>—</td></tr>
+        <tr><td>19h30–20h</td><td>Dormir à noite</td><td>10–12h</td></tr>
+      </tbody>
+    </table>
+    <div class="notes">
+      <div class="note">
+        <div class="note-ico"><svg viewBox="0 0 24 24" style="stroke:var(--p1)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <p><strong>Nap cap (último nap curto):</strong> limitar a 20–30 min e terminar até 17h. Garante pressão de sono suficiente para dormir no horário noturno ideal.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== FASE 2 =================== -->
+<div class="age-card" id="p2">
+  <div class="card-head" style="background:var(--p2l);border-bottom:1px solid rgba(5,150,105,.1)" onclick="tog(this)">
+    <div class="phase-badge" style="background:var(--p2l);color:var(--p2)">Fase 3</div>
+    <div>
+      <div class="card-age" style="color:var(--p2)">6 a 9 meses</div>
+      <div class="card-sleep">12–15h de sono total por dia · Transição 3→2 naps</div>
+    </div>
+    <div class="card-toggle"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+  </div>
+  <div class="card-body">
+    <div class="stats">
+      <div class="stat"><div class="stat-val" style="color:var(--p2)">12–15h</div><div class="stat-key">Sono total/dia</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p2)">2–3</div><div class="stat-key">Naps por dia</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p2)">2–3h</div><div class="stat-key">Janela de vigília</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p2)">18h–20h</div><div class="stat-key">Hora de dormir</div></div>
+    </div>
+    <div class="sec-head">Rotina com 2 naps (6–9 meses)</div>
+    <table class="ww-table">
+      <thead><tr><th>Hora</th><th>Evento</th><th>Duração</th></tr></thead>
+      <tbody>
+        <tr><td>07h00</td><td>Acordar</td><td>—</td></tr>
+        <tr><td>09h–09h30</td><td>Nap 1 (manhã)</td><td>60–90 min</td></tr>
+        <tr><td>13h–13h30</td><td>Nap 2 (tarde)</td><td>60–90 min</td></tr>
+        <tr><td>18h30–19h30</td><td>Dormir à noite</td><td>10–12h</td></tr>
+      </tbody>
+    </table>
+    <div class="sec-head">Sinais de prontidão para 2 naps</div>
+    <div class="notes">
+      <div class="note">
+        <div class="note-ico"><svg viewBox="0 0 24 24" style="stroke:var(--p2)"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <p>Resistência consistente ao 3º nap por mais de 1 semana; naps matinais e vespertinos se alongando naturalmente; noite sem perturbação mesmo sem o 3º nap.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== FASE 3 =================== -->
+<div class="age-card" id="p3">
+  <div class="card-head" style="background:var(--p3l);border-bottom:1px solid rgba(217,119,6,.1)" onclick="tog(this)">
+    <div class="phase-badge" style="background:var(--p3l);color:var(--p3)">Fase 4</div>
+    <div>
+      <div class="card-age" style="color:var(--p3)">9 a 12 meses</div>
+      <div class="card-sleep">11–14h de sono total · 2 naps estáveis</div>
+    </div>
+    <div class="card-toggle"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+  </div>
+  <div class="card-body">
+    <div class="stats">
+      <div class="stat"><div class="stat-val" style="color:var(--p3)">11–14h</div><div class="stat-key">Sono total/dia</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p3)">2</div><div class="stat-key">Naps por dia</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p3)">2,5–4h</div><div class="stat-key">Janela de vigília</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p3)">18h–20h</div><div class="stat-key">Hora de dormir</div></div>
+    </div>
+    <div class="sec-head">Rotina sugerida (10–11 meses)</div>
+    <table class="ww-table">
+      <thead><tr><th>Hora</th><th>Evento</th><th>Duração</th></tr></thead>
+      <tbody>
+        <tr><td>06h30–07h</td><td>Acordar</td><td>—</td></tr>
+        <tr><td>09h30–10h</td><td>Nap 1</td><td>60–90 min</td></tr>
+        <tr><td>14h–14h30</td><td>Nap 2</td><td>60–90 min</td></tr>
+        <tr><td>19h–19h30</td><td>Dormir à noite</td><td>10–12h</td></tr>
+      </tbody>
+    </table>
+    <div class="notes">
+      <div class="note">
+        <div class="note-ico"><svg viewBox="0 0 24 24" style="stroke:var(--p3)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <p><strong>Regressão dos 8–10 meses:</strong> marcos motores (engatinhar, levantar) e desenvolvimento cognitivo intenso causam despertares temporários. Mantenha a rotina — passa em 2–4 semanas.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== FASE 4 =================== -->
+<div class="age-card" id="p4">
+  <div class="card-head" style="background:var(--p4l);border-bottom:1px solid rgba(220,38,38,.1)" onclick="tog(this)">
+    <div class="phase-badge" style="background:var(--p4l);color:var(--p4)">Fase 5</div>
+    <div>
+      <div class="card-age" style="color:var(--p4)">12 a 18 meses</div>
+      <div class="card-sleep">11–14h de sono total · Transição 2→1 nap</div>
+    </div>
+    <div class="card-toggle"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+  </div>
+  <div class="card-body">
+    <div class="stats">
+      <div class="stat"><div class="stat-val" style="color:var(--p4)">11–14h</div><div class="stat-key">Sono total/dia</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p4)">1–2</div><div class="stat-key">Naps (transição)</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p4)">4–6h</div><div class="stat-key">Janela de vigília</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p4)">18h30–20h30</div><div class="stat-key">Hora de dormir</div></div>
+    </div>
+    <div class="sec-head">Rotina com 1 nap (após 15 meses)</div>
+    <table class="ww-table">
+      <thead><tr><th>Hora</th><th>Evento</th><th>Duração</th></tr></thead>
+      <tbody>
+        <tr><td>07h00</td><td>Acordar</td><td>—</td></tr>
+        <tr><td>12h30–13h</td><td>Nap único (meio-dia)</td><td>1,5–2,5h</td></tr>
+        <tr><td>19h30–20h</td><td>Dormir à noite</td><td>10–12h</td></tr>
+      </tbody>
+    </table>
+    <div class="sec-head">Sinais de prontidão para 1 nap</div>
+    <div class="notes">
+      <div class="note">
+        <div class="note-ico"><svg viewBox="0 0 24 24" style="stroke:var(--p4)"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <p>Leva mais de 30 min para adormecer no nap da manhã; nap da tarde perturba o sono noturno; fica bem e sem irritabilidade até o horário do nap único. A maioria faz a transição entre 15–18 meses.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== FASE 5 =================== -->
+<div class="age-card" id="p5">
+  <div class="card-head" style="background:var(--p5l);border-bottom:1px solid rgba(124,58,237,.1)" onclick="tog(this)">
+    <div class="phase-badge" style="background:var(--p5l);color:var(--p5)">Fase 6</div>
+    <div>
+      <div class="card-age" style="color:var(--p5)">18 meses a 3 anos</div>
+      <div class="card-sleep">11–14h de sono total · 1 nap (pode começar a rejeitar)</div>
+    </div>
+    <div class="card-toggle"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+  </div>
+  <div class="card-body">
+    <div class="stats">
+      <div class="stat"><div class="stat-val" style="color:var(--p5)">11–14h</div><div class="stat-key">Sono total/dia</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p5)">1 (ou 0)</div><div class="stat-key">Naps por dia</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p5)">5–7h</div><div class="stat-key">Janela de vigília</div></div>
+      <div class="stat"><div class="stat-val" style="color:var(--p5)">19h–20h30</div><div class="stat-key">Hora de dormir</div></div>
+    </div>
+    <div class="sec-head">Rotina sugerida (2 anos)</div>
+    <table class="ww-table">
+      <thead><tr><th>Hora</th><th>Evento</th><th>Duração</th></tr></thead>
+      <tbody>
+        <tr><td>07h00</td><td>Acordar</td><td>—</td></tr>
+        <tr><td>13h–13h30</td><td>Nap ou "hora do descanso"</td><td>60–120 min</td></tr>
+        <tr><td>19h30–20h</td><td>Dormir à noite</td><td>10–12h</td></tr>
+      </tbody>
+    </table>
+    <div class="notes">
+      <div class="note">
+        <div class="note-ico"><svg viewBox="0 0 24 24" style="stroke:var(--p5)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <p><strong>Hora do descanso mesmo sem dormir:</strong> quando a criança rejeitar o nap, institua 60–90 min de tempo quieto no quarto (livros, quebra-cabeça). O descanso passivo ainda recupera e evita a noite agitada.</p>
+      </div>
+      <div class="note">
+        <div class="note-ico"><svg viewBox="0 0 24 24" style="stroke:var(--p5)"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
+        <p><strong>Regressão dos 2 anos:</strong> desenvolvimento da linguagem e maior consciência do mundo causam resistência ao sono. Não negocie o horário — seja firme com gentileza.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="alert">
+  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  <p><strong>Importante:</strong> estas são médias baseadas em estudos populacionais. Cada bebê tem variabilidade individual de ±1–2 horas. O sinal mais confiável de que o bebê está bem dormido é o comportamento durante a vigília — criança descansada é curiosa, bem-humorada e tem concentração adequada para a idade.</p>
+</div>
+</div>
+
+<div class="ft">
+  <p><strong>Protocolo do Sono Perfeito</strong> · Bônus 02 — Tabela de Horários por Idade · Uso exclusivo do comprador</p>
+</div>
+
+<script>
+function tog(head){
+  const card=head.closest('.age-card');
+  card.classList.toggle('open');
+}
+function jump(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.add('open');
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

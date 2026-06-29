@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Checklist Noturno — Protocolo do Sono Perfeito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --n0:#04091a;--n1:#080f24;--n2:#0b1630;--n3:#0f1e3a;
+  --gold:#c9a84c;--gold2:#d4b45c;--gold3:#e4c97a;
+  --cream:#faf8f3;--cream2:#f2ede0;
+  --ink:#111827;--muted:#6b7280;
+  --sf:'Playfair Display',Georgia,serif;
+  --ss:'Inter',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ss);background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* ---- HEADER ---- */
+.hd{
+  background:linear-gradient(135deg,var(--n0) 0%,var(--n2) 100%);
+  padding:40px 48px 36px;
+  border-bottom:2px solid var(--gold);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  flex-wrap:wrap;
+}
+.hd-brand{font-family:var(--sf);font-style:italic;color:var(--gold);font-size:13px;letter-spacing:.04em;margin-bottom:10px}
+.hd h1{font-family:var(--sf);font-size:38px;font-weight:900;color:#fff;line-height:1.1}
+.hd h1 em{color:var(--gold3);font-style:italic}
+.hd-sub{font-size:14px;color:rgba(255,255,255,.5);margin-top:10px;line-height:1.6;max-width:420px}
+.hd-badge{
+  background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);
+  border-radius:12px;padding:16px 22px;text-align:center;min-width:120px;flex-shrink:0;
+}
+.hd-badge-n{font-size:38px;font-weight:900;color:var(--gold);font-family:var(--ss);line-height:1}
+.hd-badge-l{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px;text-transform:uppercase;letter-spacing:.1em}
+
+/* ---- INTRO ---- */
+.intro{background:var(--cream2);border-bottom:1px solid #e5ddd0;padding:20px 48px}
+.intro p{font-size:13.5px;color:var(--muted);line-height:1.75;max-width:680px}
+.intro strong{color:var(--ink)}
+
+/* ---- MAIN ---- */
+.wrap{max-width:860px;margin:0 auto;padding:36px 48px 64px}
+
+/* ---- BLOCK ---- */
+.block{margin-bottom:36px}
+.block-head{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 20px;
+  background:linear-gradient(90deg,var(--n2),var(--n3));
+  border-left:4px solid var(--gold);
+  border-radius:0 10px 10px 0;
+  margin-bottom:14px;
+}
+.block-icon{
+  width:36px;height:36px;border-radius:8px;
+  background:rgba(201,168,76,.15);display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.block-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.block-title{font-family:var(--sf);font-size:18px;font-weight:700;color:#fff}
+.block-time{font-size:12px;color:rgba(255,255,255,.4);margin-left:auto;font-weight:500;white-space:nowrap}
+
+/* ---- ITEMS ---- */
+.items{display:flex;flex-direction:column;gap:8px}
+.item{
+  display:flex;align-items:flex-start;gap:14px;
+  background:#fff;border:1.5px solid #e8e0d4;
+  border-radius:10px;padding:14px 18px;
+  cursor:pointer;transition:border-color .2s,background .2s;
+  user-select:none;
+}
+.item:hover{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.03)}
+.item.checked{border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.05)}
+.cb{
+  width:22px;height:22px;border:2px solid #d0c8be;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;transition:all .2s;
+}
+.cb svg{width:13px;height:13px;stroke:transparent;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
+.item.checked .cb{background:var(--gold);border-color:var(--gold)}
+.item.checked .cb svg{stroke:var(--n0)}
+.item-body{}
+.item-text{font-weight:600;font-size:14px;color:var(--ink)}
+.item-note{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.55}
+.item.checked .item-text{color:var(--muted)}
+
+/* ---- TIP ---- */
+.tip{
+  background:linear-gradient(135deg,var(--n1),var(--n3));
+  border:1px solid rgba(201,168,76,.2);
+  border-radius:14px;padding:22px 26px;
+  margin-top:36px;display:flex;gap:16px;align-items:flex-start;
+}
+.tip-ico{flex-shrink:0;margin-top:2px}
+.tip-ico svg{width:20px;height:20px;stroke:var(--gold2);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tip-text{font-size:13.5px;color:rgba(255,255,255,.65);line-height:1.72}
+.tip-text strong{color:var(--gold3)}
+
+/* ---- PROGRESS ---- */
+.prog-wrap{background:var(--cream2);border-top:1px solid #e5ddd0;padding:16px 48px;position:sticky;top:0;z-index:10}
+.prog-in{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:16px}
+.prog-bar{flex:1;height:6px;background:#e8e0d4;border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold3));border-radius:3px;width:0;transition:width .3s ease}
+.prog-label{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.prog-count{font-size:12px;font-weight:800;color:var(--gold)}
+
+/* ---- FOOTER ---- */
+.ft{background:var(--n0);padding:24px 48px;text-align:center;border-top:1px solid rgba(201,168,76,.15)}
+.ft p{font-size:11.5px;color:rgba(255,255,255,.25)}
+.ft strong{color:var(--gold);font-style:italic;font-family:var(--sf)}
+
+/* ---- PRINT ---- */
+@media print{
+  .prog-wrap,.ft{display:none}
+  .hd,.block-head{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .item{break-inside:avoid}
+  body{background:#fff}
+  .wrap{padding:24px}
+}
+@media(max-width:640px){
+  .hd,.intro,.wrap,.prog-wrap,.ft{padding-left:20px;padding-right:20px}
+  .hd h1{font-size:28px}
+}
+</style>
+</head>
+<body>
+
+<!-- STICKY PROGRESS -->
+<div class="prog-wrap">
+  <div class="prog-in">
+    <span class="prog-label">Progresso: <span class="prog-count" id="pct">0%</span></span>
+    <div class="prog-bar"><div class="prog-fill" id="pfill"></div></div>
+    <span class="prog-label"><span id="pdone">0</span> / <span id="ptotal">0</span> itens</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="hd">
+  <div>
+    <div class="hd-brand">Protocolo do Sono Perfeito</div>
+    <h1>Checklist <em>Noturno</em></h1>
+    <p class="hd-sub">Use todos os dias antes de colocar o bebê para dormir. Quando a rotina é consistente, o bebê aprende a reconhecer os sinais de sono.</p>
+  </div>
+  <div class="hd-badge">
+    <div class="hd-badge-n">5</div>
+    <div class="hd-badge-l">etapas</div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div class="intro">
+  <p><strong>Como usar:</strong> siga as etapas na ordem cada noite. Clique nos itens para marcar como concluído e acompanhe seu progresso no topo. Para imprimir ou salvar como PDF, pressione <strong>Cmd+P (Mac)</strong> ou <strong>Ctrl+P (Windows)</strong>.</p>
+</div>
+
+<!-- CONTENT -->
+<div class="wrap">
+
+  <!-- BLOCO 1 -->
+  <div class="block">
+    <div class="block-head">
+      <div class="block-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <span class="block-title">2 horas antes</span>
+      <span class="block-time">Preparação do ambiente</span>
+    </div>
+    <div class="items">
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Reduzir iluminação da casa gradualmente</div>
+          <div class="item-note">Apague ou diminua luzes fortes. A luz sinaliza "dia" para o sistema nervoso do bebê e atrasa a produção de melatonina.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Desligar TV e reduzir estímulos sonoros</div>
+          <div class="item-note">Sons agudos e ritmos acelerados aumentam o estado de alerta. Prefira música calma ou silêncio nessa janela.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Última refeição substancial (não no momento de dormir)</div>
+          <div class="item-note">Bebê com fome acorda mais cedo. Bebê muito cheio fica desconfortável. Ajuste o horário da mamada/papinha para 60-90 min antes de dormir.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Verificar temperatura do quarto</div>
+          <div class="item-note">Ideal: 20–22°C. Quarto quente é a principal causa de despertares noturnos e está associado ao risco de SMSI. Use termômetro ambiente.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 2 -->
+  <div class="block">
+    <div class="block-head">
+      <div class="block-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      </div>
+      <span class="block-title">Rotina de higiene</span>
+      <span class="block-time">45–60 min antes</span>
+    </div>
+    <div class="items">
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Banho morno (se fizer parte da rotina)</div>
+          <div class="item-note">Temperatura da água: 37–38°C. A queda de temperatura corporal após o banho induz sonolência. Não precisa ser diário — o importante é ser consistente.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Massagem suave (opcional mas altamente recomendado)</div>
+          <div class="item-note">5–10 min com óleo de amêndoas ou loção infantil. Reduz cortisol e ativa o sistema parassimpático — o estado de "descanso" do organismo.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Pijama adequado para a temperatura</div>
+          <div class="item-note">Regra prática: use uma camada a mais do que você usaria. Verifique pela nuca — se suada, quente demais; se fria, frio demais.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Trocar fralda (fralda limpa = menos desconforto)</div>
+          <div class="item-note">Use fralda noturna se disponível — têm maior capacidade de absorção e reduzem a necessidade de troca durante a madrugada.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 3 -->
+  <div class="block">
+    <div class="block-head">
+      <div class="block-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </div>
+      <span class="block-title">Ritual de desaceleração</span>
+      <span class="block-time">30 min antes</span>
+    </div>
+    <div class="items">
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Atividade calma: leitura ou música suave</div>
+          <div class="item-note">Livros de pano ou com imagens simples. Músicas em tom menor e ritmo lento (60–80 BPM) sincronizam com a frequência cardíaca em repouso.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Amamentação ou mamadeira final (se parte da rotina)</div>
+          <div class="item-note">Faça antes de entrar no quarto escuro, não como último ato antes de deitar — evita associação exclusiva de seio/mamadeira com o início do sono.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Falar com voz baixa e pausada</div>
+          <div class="item-note">Seu tom de voz é um poderoso regulador emocional para o bebê. Fale devagar, em volume baixo — isso ativa o sistema nervoso parassimpático dele.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 4 -->
+  <div class="block">
+    <div class="block-head">
+      <div class="block-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <span class="block-title">Preparação do quarto</span>
+      <span class="block-time">Antes de entrar</span>
+    </div>
+    <div class="items">
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Escuridão total ou quase total</div>
+          <div class="item-note">Qualquer luz (inclusive do monitor, carregador ou entrada por frestas) pode suprimir melatonina. Blackout ou cortinas grossas são investimento que vale.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Ruído branco ligado (50–65 dB)</div>
+          <div class="item-note">Simula o ambiente intraútero e mascara sons externos. Apps gratuitos funcionam — coloque o aparelho a pelo menos 2 metros do bebê, nunca dentro do berço.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Berço limpo e seguro (sem almofadas, bonecas ou cobertores)</div>
+          <div class="item-note">A superfície deve ser firme e plana. Nenhum objeto solto — inclusive amigos de pelúcia — até os 12 meses. Coloque o bebê sempre de costas.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Saco de dormir ou swaddle (conforme a fase)</div>
+          <div class="item-note">Até ~3-4 meses: swaddle (embrulho) reduz reflexo de Moro. Após virar: saco de dormir sem mangas. Nunca cubertore solto para bebês pequenos.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 5 -->
+  <div class="block">
+    <div class="block-head">
+      <div class="block-icon">
+        <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <span class="block-title">Hora de deitar</span>
+      <span class="block-time">O momento decisivo</span>
+    </div>
+    <div class="items">
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Colocar no berço sonolento, mas ainda acordado</div>
+          <div class="item-note">Esta é a habilidade mais importante do protocolo. Bebê que adormece no berço sabe se recolocar no sono ao acordar no meio do ciclo — sem precisar de você.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Frase de encerramento consistente</div>
+          <div class="item-note">Escolha uma frase curta ("hora de dormir, te amo") e use todas as noites. Rituais verbais criam âncoras neurológicas que aceleram o início do sono.</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="item-body">
+          <div class="item-text">Sair do quarto de forma confiante e tranquila</div>
+          <div class="item-note">Bebês detectam ansiedade. Saída hesitante prolonga o choro de protesto. Saia, feche a porta suavemente e confie no processo.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIP -->
+  <div class="tip">
+    <div class="tip-ico">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    <div class="tip-text">
+      <strong>A consistência é o protocolo.</strong> Não precisa seguir todos os itens perfeitamente toda noite. O que importa é repetir os mesmos sinais, na mesma sequência, todos os dias. Em 5 a 10 dias, o cérebro do bebê começa a reconhecer a rotina como "agora é hora de dormir" — e o processo fica progressivamente mais fácil.
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="ft">
+  <p><strong>Protocolo do Sono Perfeito</strong> · Bônus 01 — Checklist Noturno · Uso exclusivo do comprador</p>
+</div>
+
+<script>
+let total=0,done=0;
+function toggle(el){
+  el.classList.toggle('checked');
+  done=document.querySelectorAll('.item.checked').length;
+  total=document.querySelectorAll('.item').length;
+  const pct=Math.round(done/total*100);
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('pfill').style.width=pct+'%';
+  document.getElementById('pdone').textContent=done;
+  document.getElementById('ptotal').textContent=total;
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  total=document.querySelectorAll('.item').length;
+  document.getElementById('ptotal').textContent=total;
+});
+</script>
+</body>
+</html>
