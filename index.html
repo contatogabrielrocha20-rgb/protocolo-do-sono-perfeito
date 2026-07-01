@@ -23,6 +23,10 @@ fbq('track','ViewContent',{content_name:'Protocolo do Sono Perfeito',content_cat
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1004966469135769&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel -->
 
+<!-- Utmify: captura UTMs da URL e repassa automaticamente para o checkout Kiwify -->
+<script src="https://cdn.utmify.com.br/scripts/utms/latest.js" data-utmify-prevent-xcod-sck async defer></script>
+<!-- End Utmify -->
+
 <!-- SVG Icons lib (inline, zero external deps) -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
@@ -986,6 +990,18 @@ setTimeout(showPopup,4000);
 setInterval(()=>{
   if(!document.getElementById('sp-popup').classList.contains('show'))showPopup();
 },20000);
+</script>
+
+<!-- Fallback: garante repasse de UTM pro checkout mesmo se o script da Utmify falhar -->
+<script>
+(function(){
+  const qs = window.location.search;
+  if(!qs) return;
+  document.querySelectorAll('a[href^="https://pay.kiwify.com.br/"]').forEach(function(a){
+    const sep = a.href.includes('?') ? '&' : '?';
+    a.href = a.href + sep + qs.slice(1);
+  });
+})();
 </script>
 </body>
 </html>
